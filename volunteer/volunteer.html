@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Volunteer Hours Tracker</title>
+  <script defer src="../js/volunteer.js"></script>
+</head>
+
+<body>
+  <h1>Volunteer Hours Tracker</h1>
+
+  <!-- FORM -->
+  <form id="volunteerForm">
+    <label>Charity Name</label>
+    <input type="text" id="charityName">
+
+    <label>Hours Volunteered</label>
+    <input type="number" id="hours">
+
+    <label>Date</label>
+    <input type="date" id="date">
+
+    <label>Experience Rating (1-5)</label>
+    <input type="number" id="rating" min="1" max="5">
+
+    <button type="submit">Add</button>
+  </form>
+
+  <div id="errors"></div>
+
+  <!-- TABLE -->
+  <table id="volunteerTable">
+    <thead>
+      <tr>
+        <th>Charity</th>
+        <th>Hours</th>
+        <th>Date</th>
+        <th>Rating</th>
+        <th>Delete</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <h3>Total Hours: <span id="totalHours">0</span></h3>
+
+</body>
+</html>
