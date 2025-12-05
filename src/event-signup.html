@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>PiXELL River – Event Signup</title>
+  <link rel="stylesheet" href="/src/styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <h1>PiXELL River Financial – Community Support Tracker</h1>
+  </header>
+
+  <nav class="site-nav">
+    <a href="/src/index.html">Home</a>
+    <a href="/src/donation.html">Donation Tracker</a>
+    <a href="/src/volunteer.html">Volunteer Hours</a>
+    <a href="/src/event-signup.html" aria-current="page">Event Signup</a>
+  </nav>
+
+  <main>
+    <!-- SECTION 1: FORM -->
+    <section id="event-form-section">
+      <h2>Event Signup</h2>
+
+      <form id="event-signup-form" novalidate>
+        <label>
+          Event Name
+          <input type="text" id="event-name" name="eventName" required />
+          <span class="error" id="event-name-error"></span>
+        </label>
+
+        <label>
+          Company Representative's Name
+          <input type="text" id="rep-name" name="repName" required />
+          <span class="error" id="rep-name-error"></span>
+        </label>
+
+        <label>
+          Representative's Email
+          <input type="email" id="rep-email" name="repEmail" required />
+          <span class="error" id="rep-email-error"></span>
+        </label>
+
+        <label>
+          Role
+          <select id="event-role" name="role" required>
+            <option value="">Select a role</option>
+            <option value="Sponsor">Sponsor</option>
+            <option value="Participant">Participant</option>
+            <option value="Organizer">Organizer</option>
+          </select>
+          <span class="error" id="event-role-error"></span>
+        </label>
+
+        <button type="submit">Sign Up</button>
+        <p id="form-success" class="success-message"></p>
+      </form>
+    </section>
+
+    <!-- SECTION 2 & 3 will be used in Stage Two -->
+    <section id="event-table-section">
+      <!-- Stage Two later -->
+    </section>
+
+    <section id="event-summary-section">
+      <!-- Stage Two later -->
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>&copy; PiXELL River Financial – Community Support Tracker</p>
+  </footer>
+
+  <script type="module" src="/src/js/eventSignup.js"></script>
+</body>
+</html>
