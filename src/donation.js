@@ -1,26 +1,31 @@
-// Validate donation input fields
-function validateDonation({ charity, amount, date }) {
+
+// Donation Tracker Logic
+
+// Validate donation form data
+function validateDonation(formData) {
   const errors = [];
-  if (!charity || charity.trim() === "") {
-    errors.push("Charity is required");
+
+  if (!formData.charity || formData.charity.trim() === "") {
+    errors.push("Charity name is required.");
   }
-  if (!amount || isNaN(amount) || Number(amount) <= 0) {
-    errors.push("Amount must be a positive number");
+  if (!formData.amount || isNaN(formData.amount) || Number(formData.amount) <= 0) {
+    errors.push("Donation amount must be a positive number.");
   }
-  if (!date || date.trim() === "") {
-    errors.push("Date is required");
+  if (!formData.date) {
+    errors.push("Date is required.");
   }
+
   return errors;
 }
 
-// Create a donation object with unique id
-function makeDonationObject({ charity, amount, date, comment }) {
+// Create a donation object
+function makeDonationObject(formData) {
   return {
-    id: crypto.randomUUID ? crypto.randomUUID() : String(Date.now()), // unique ID
-    charity,
-    amount: parseFloat(amount), // store as number
-    date,
-    comment
+    id: Date.now(), // unique ID
+    charity: formData.charity,
+    amount: Number(formData.amount),
+    date: formData.date,
+    comment: formData.comment || ""
   };
 }
 
@@ -31,45 +36,50 @@ function saveToLocalStorage(key, data) {
 
 // Load data from localStorage
 function loadFromLocalStorage(key) {
-  const data = localStorage.getItem(key);
-  return data ? JSON.parse(data) : [];
+  const raw = localStorage.getItem(key);
+  return raw ? JSON.parse(raw) : [];
 }
 
-// Calculate total donated
+// Calculate total donations
 function calculateTotal(donations) {
-  return donations.reduce((sum, d) => sum + parseFloat(d.amount), 0);
+  return donations.reduce((sum, d) => sum + d.amount, 0);
 }
 
-// Render donations table and summary
-function renderTableAndSummary(document) {
-  const donations = loadFromLocalStorage('csr_donations');
-  const tbody = document.querySelector('#donationsTable tbody');
-  tbody.innerHTML = '';
+// Render donation table and summary
+function renderTableAndSummary(donations) {
+  const tableBody = document.querySelector("#donationTable tbody");
+  const summary = document.getElementById("donationSummary");
 
-  let total = 0;
+  if (!tableBody || !summary) return; // safeguard for tests
+
+  // Clear old rows
+  tableBody.innerHTML = "";
+
+  // Add each donation as a row
   donations.forEach(donation => {
-    const row = document.createElement('tr');
+    const row = document.createElement("tr");
     row.innerHTML = `
       <td>${donation.charity}</td>
-      <td>$${Number(donation.amount).toFixed(2)}</td>
+      <td>${donation.amount.toFixed(2)}</td>
       <td>${donation.date}</td>
-      <td>${donation.comment || ''}</td>
-      <td><button data-id="${donation.id}" class="delete-btn">Delete</button></td>
+      <td>${donation.comment}</td>
     `;
-    tbody.appendChild(row);
-    total += parseFloat(donation.amount);
+    tableBody.appendChild(row);
   });
 
-  document.getElementById('summary').textContent =
-    `Total donated: $${total.toFixed(2)}`;
+  // Update summary
+  const total = calculateTotal(donations);
+  summary.textContent = `Total Donations: $${total.toFixed(2)}`;
 }
 
-// Export functions for Jest tests
+
+// Export functions for testing
+
 module.exports = {
   validateDonation,
   makeDonationObject,
   saveToLocalStorage,
   loadFromLocalStorage,
-  renderTableAndSummary,
-  calculateTotal
+  calculateTotal,
+  renderTableAndSummary
 };
