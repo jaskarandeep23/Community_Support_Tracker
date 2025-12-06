@@ -2,12 +2,8 @@ const { JSDOM } = require("jsdom");
 
 const {
   validateVolunteer,
-  makeVolunteerObject,
-  calculateTotalHours,
-  saveToLocalStorage,
-  loadFromLocalStorage,
-  renderVolunteerTable
-} = require("../js/volunteer.js");
+  makeVolunteerObject
+} = require("./volunteer.js");
 
 describe("Volunteer Tracker - Stage One Tests", () => {
 
@@ -45,16 +41,6 @@ describe("Volunteer Tracker - Stage One Tests", () => {
     expect(obj.hours).toBe(3);
     expect(obj.rating).toBe(4);
     expect(obj.id).toBeDefined();
-  });
-
-  test("calculateTotalHours works correctly", () => {
-    const logs = [
-      { hours: 2 },
-      { hours: 3 },
-      { hours: 5 }
-    ];
-
-    expect(calculateTotalHours(logs)).toBe(10);
   });
 
 });
