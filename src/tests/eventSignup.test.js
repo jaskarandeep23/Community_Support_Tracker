@@ -1,10 +1,10 @@
-import {
+const {
   validateRequiredFields,
   validateEmail,
   processFormData,
   setupEventSignupForm,
-  currentSignup,
-} from "../js/eventSignup";
+  getCurrentSignup,
+} = require("../js/eventSignup.js");
 
 // Helper to build the form DOM for integration tests
 function createFormHTML() {
@@ -99,7 +99,7 @@ describe("Event Signup – integration with DOM", () => {
       new Event("submit", { bubbles: true, cancelable: true })
     );
 
-    expect(currentSignup).toEqual({
+    expect(getCurrentSignup()).toEqual({
       eventName: "Cleanup Day",
       repName: "Sam",
       repEmail: "sam@example.com",
