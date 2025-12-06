@@ -41,8 +41,20 @@ function makeVolunteerObject({ charity, hours, date, rating }) {
   };
 }
 
+// Calculate total volunteer hours from an array of logs
+function calculateTotalHours(logs) {
+  if (!Array.isArray(logs)) return 0;
+
+  return logs.reduce((total, entry) => {
+    const hours = Number(entry.hours) || 0;
+    return total + hours;
+  }, 0);
+}
+
+
 // Export for Jest
 module.exports = {
   validateVolunteer,
-  makeVolunteerObject
+  makeVolunteerObject,
+  calculateTotalHours
 };
