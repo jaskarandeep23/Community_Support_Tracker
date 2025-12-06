@@ -1,33 +1,41 @@
-// Temporary storage for the latest signup (Stage One requirement)
-export let currentSignup = null;
+// src/js/eventSignup.js
+
+// Store the latest valid signup for Stage One
+let currentSignup = null;
 
 // Validate email format
-export function validateEmail(email) {
+function validateEmail(email) {
   const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   return emailPattern.test(email);
 }
 
-// Check required fields and email
-export function validateRequiredFields(data) {
+// Validate all required fields
+function validateRequiredFields(data) {
   const errors = {};
 
-  if (!data.eventName.trim()) errors.eventName = "Event name is required.";
-  if (!data.repName.trim())
-    errors.repName = "Representative name is required.";
+  if (!data.eventName || data.eventName.trim() === "") {
+    errors.eventName = "Event name is required.";
+  }
 
-  if (!data.repEmail.trim()) {
+  if (!data.repName || data.repName.trim() === "") {
+    errors.repName = "Representative name is required.";
+  }
+
+  if (!data.repEmail || data.repEmail.trim() === "") {
     errors.repEmail = "Email is required.";
   } else if (!validateEmail(data.repEmail)) {
     errors.repEmail = "Please enter a valid email.";
   }
 
-  if (!data.role.trim()) errors.role = "Role is required.";
+  if (!data.role || data.role.trim() === "") {
+    errors.role = "Role is required.";
+  }
 
-  return errors; // if empty, form is valid
+  return errors;
 }
 
 // Turn the form into a plain JS object
-export function processFormData(form) {
+function processFormData(form) {
   return {
     eventName: form.eventName.value,
     repName: form.repName.value,
@@ -36,13 +44,14 @@ export function processFormData(form) {
   };
 }
 
-export function clearErrors(documentObj = document) {
-  documentObj.querySelectorAll(".error").forEach((span) => {
+function clearErrors(documentObj = document) {
+  const spans = documentObj.querySelectorAll(".error");
+  spans.forEach((span) => {
     span.textContent = "";
   });
 }
 
-export function showErrors(errors, documentObj = document) {
+function showErrors(errors, documentObj = document) {
   if (errors.eventName) {
     documentObj.getElementById("event-name-error").textContent =
       errors.eventName;
@@ -61,8 +70,7 @@ export function showErrors(errors, documentObj = document) {
   }
 }
 
-// Hook up the submit handler
-export function setupEventSignupForm(documentObj = document) {
+function setupEventSignupForm(documentObj = document) {
   const form = documentObj.getElementById("event-signup-form");
   if (!form) return;
 
@@ -70,7 +78,9 @@ export function setupEventSignupForm(documentObj = document) {
     event.preventDefault();
 
     const successMessage = documentObj.getElementById("form-success");
-    if (successMessage) successMessage.textContent = "";
+    if (successMessage) {
+      successMessage.textContent = "";
+    }
 
     clearErrors(documentObj);
 
@@ -79,10 +89,10 @@ export function setupEventSignupForm(documentObj = document) {
 
     if (Object.keys(errors).length > 0) {
       showErrors(errors, documentObj);
-      return; // stop, do not save
+      return;
     }
 
-    // ✅ valid: update temporary data object
+    // Valid form – update current signup
     currentSignup = data;
 
     if (successMessage) {
@@ -93,9 +103,24 @@ export function setupEventSignupForm(documentObj = document) {
   });
 }
 
-// Run automatically in the browser (but not in Jest environment)
+// Helper for tests so they can read the value
+function getCurrentSignup() {
+  return currentSignup;
+}
+
+// Auto-setup in the browser
 if (typeof document !== "undefined") {
   document.addEventListener("DOMContentLoaded", () => {
     setupEventSignupForm(document);
   });
 }
+
+module.exports = {
+  validateEmail,
+  validateRequiredFields,
+  processFormData,
+  clearErrors,
+  showErrors,
+  setupEventSignupForm,
+  getCurrentSignup,
+};

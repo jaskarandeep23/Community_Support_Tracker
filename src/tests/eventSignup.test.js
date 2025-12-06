@@ -6,7 +6,7 @@ const {
   getCurrentSignup,
 } = require("../js/eventSignup.js");
 
-// Helper to build the form DOM for integration tests
+// Build a fake DOM form for integration tests
 function createFormHTML() {
   document.body.innerHTML = `
     <form id="event-signup-form">
